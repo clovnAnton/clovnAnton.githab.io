@@ -259,10 +259,21 @@ function getCardHTML(data) {
     let icon = getGameIcon(data.game);
     let tags = data.tags && data.tags.length > 0 ? data.tags : ["Newbie"]; 
 
+    // Логика значка пола
+    let genderIcon = '';
+    if (data.gender === 'male') {
+        genderIcon = '<i class="fa-solid fa-mars" style="color: #74b9ff; margin-left: 8px;" title="Male"></i>';
+    } else if (data.gender === 'female') {
+        genderIcon = '<i class="fa-solid fa-venus" style="color: #ff7675; margin-left: 8px;" title="Female"></i>';
+    }
+
     return `
         <img src="${data.img}" class="card-photo">
         <div class="card-content">
-            <div class="user-name-large">${data.name}</div>
+            <div class="user-name-large">
+                ${data.name}
+                ${genderIcon} 
+            </div>
             <div style="color:#ccc; margin-bottom:10px;">${icon} ${data.game}</div>
             <div style="display:flex; gap:5px; margin-bottom:10px;">
                 ${tags.map(t => `<span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px; font-size:0.8rem;">${t}</span>`).join('')}
@@ -381,6 +392,7 @@ window.toggleTag = toggleTag;
 document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
 });
+
 
 
 
