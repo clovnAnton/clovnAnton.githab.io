@@ -53,13 +53,13 @@ function updateInterface() {
 
     if (isLoggedIn) {
         landing.style.display = 'none';
-        app.style.display = 'block'; // Стал Flex или Block
+        app.style.display = 'block'; 
         nav.classList.remove('hidden'); 
         
         authBtn.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i>';
         authBtn.style.background = '#e74c3c';
         authBtn.style.borderColor = '#e74c3c';
-        authBtn.title = "Выйти";
+        authBtn.title = "Log Out"; // ENGLISH
         
         switchTab('home'); 
     } else {
@@ -67,7 +67,7 @@ function updateInterface() {
         app.style.display = 'none';
         nav.classList.add('hidden');
         
-        authBtn.innerHTML = '<i class="fa-brands fa-steam"></i> Войти через Steam';
+        authBtn.innerHTML = '<i class="fa-brands fa-steam"></i> Login with Steam'; // ENGLISH
         authBtn.style.background = '#171a21';
         authBtn.style.borderColor = '#3a3d45';
         authBtn.removeAttribute('title');
@@ -80,30 +80,28 @@ function redirectToReg() {
 
 // --- NAVIGATION ---
 function switchTab(tabName) {
-    // Проверка анкеты для социальных вкладок
     const socialTabs = ['search', 'matches', 'likes'];
     
     if (socialTabs.includes(tabName) && !isProfileCompleted) {
-        showToast("Сначала заполните анкету!", "error");
+        showToast("Please fill out your profile first!", "error"); // ENGLISH
         switchTab('profile');
         return;
     }
 
-    // Обновление навигации в Хедере
+    // Update Header Navigation
     document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
     
-    // Если мы в подразделах поиска, подсвечиваем "Поиск" в шапке
     if(socialTabs.includes(tabName)) {
         document.getElementById('link-search').classList.add('active');
     } else if(document.getElementById(`link-${tabName}`)) {
         document.getElementById(`link-${tabName}`).classList.add('active');
     }
 
-    // Смена экранов
+    // Switch Views
     document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
     document.getElementById(`view-${tabName}`).classList.remove('hidden');
 
-    // Логика Сайдбаров
+    // Sidebar Logic
     const grid = document.getElementById('main-app-grid');
     const leftSidebar = document.getElementById('sidebar-left');
     const rightSidebar = document.getElementById('sidebar-right');
@@ -113,7 +111,6 @@ function switchTab(tabName) {
         leftSidebar.classList.remove('hidden');
         rightSidebar.classList.remove('hidden');
         
-        // Подсветка меню в левом сайдбаре
         document.querySelectorAll('#sidebar-left .menu-item').forEach(el => el.classList.remove('active'));
         if(tabName === 'search') document.getElementById('menu-search').classList.add('active');
         if(tabName === 'matches') document.getElementById('menu-matches').classList.add('active');
@@ -126,12 +123,11 @@ function switchTab(tabName) {
         rightSidebar.classList.add('hidden');
     }
 
-    // Рендер контента в зависимости от вкладки
-     if(tabName === 'home') renderDashboard();
+    // Render Content
+    if(tabName === 'home') renderDashboard();
     if(tabName === 'tournaments') renderTournaments();
     
-    // Используем setTimeout, чтобы код выполнился ПОСЛЕ того, 
-    // как браузер покажет div#view-profile
+    // --- FIX: Timeout to ensure DOM is ready for tags ---
     if(tabName === 'profile') {
         setTimeout(() => {
             renderTagsEditor();
@@ -145,40 +141,39 @@ function renderDashboard() {
     if (!isProfileCompleted) {
         container.innerHTML = `
             <div class="dash-state-container">
-                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Добро пожаловать!</h1>
-                <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1.2rem;">Чтобы начать свайпать и искать тиммейтов, вам нужно создать свою карточку.</p>
-                <button class="cta-btn" onclick="switchTab('profile')">Создать анкету <i class="fa-solid fa-arrow-right"></i></button>
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Welcome!</h1>
+                <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1.2rem;">To start swiping and finding teammates, create your profile card.</p>
+                <button class="cta-btn" onclick="switchTab('profile')">Create Profile <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         `;
     } else {
         container.innerHTML = `
             <div class="dash-hero">
                 <div>
-                    <h1 style="margin-bottom: 10px;">С возвращением, ${myProfileData.name}!</h1>
-                    <p style="color: var(--text-muted);">Ваша статистика за все время:</p>
+                    <h1 style="margin-bottom: 10px;">Welcome back, ${myProfileData.name}!</h1>
+                    <p style="color: var(--text-muted);">Your all-time stats:</p>
                 </div>
                 <img src="${myProfileData.img}" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--primary);">
             </div>
             <div class="dash-stats-grid">
-                <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Лайков</div></div>
-                <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Мэтчей</div></div>
-                <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Просмотров</div></div>
+                <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Likes</div></div>
+                <div class="stat-card"><div class="stat-num">0</div><div class="stat-label">Matches</div></div>
+                <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">Views</div></div>
             </div>
             <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);">
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <h3 style="color: var(--text-main);">Ваша анкета в поиске</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Так вас видят другие игроки</p>
+                    <h3 style="color: var(--text-main);">Your card in search</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">How others see you</p>
                 </div>
                 <div class="preview-card-wrapper">
                     ${getCardHTML(myProfileData)}
                 </div>
                 <div style="text-align: center; margin-top: 30px;">
-                    <button class="cta-btn" onclick="switchTab('search')">Перейти к поиску <i class="fa-solid fa-magnifying-glass"></i></button>
-                    <button class="cta-btn outline" style="margin-left: 10px;" onclick="switchTab('profile')">Редактировать</button>
+                    <button class="cta-btn" onclick="switchTab('search')">Start Searching <i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="cta-btn outline" style="margin-left: 10px;" onclick="switchTab('profile')">Edit</button>
                 </div>
             </div>
         `;
-        // Убираем абсолютное позиционирование у превью карточки, чтобы она встала ровно
         const card = container.querySelector('.profile-card');
         if(card) { 
             card.style.position = 'relative'; 
@@ -199,12 +194,12 @@ function renderTournaments() {
                     <div style="font-size: 1.5rem; width: 40px; text-align: center;">${icon}</div>
                     <div class="tourney-meta">
                         <h3>${t.title}</h3>
-                        <div style="color: var(--gold); font-weight: bold; font-size: 0.9rem;">Приз: ${t.prize}</div>
+                        <div style="color: var(--gold); font-weight: bold; font-size: 0.9rem;">Prize: ${t.prize}</div>
                     </div>
                 </div>
                 <div style="text-align: right;">
                     <span class="slots-badge">${t.slots}</span>
-                    <button class="btn-full" style="margin-left: 10px;">Мест нет</button>
+                    <button class="btn-full" style="margin-left: 10px;">Full</button>
                 </div>
             </div>
         `;
@@ -229,7 +224,6 @@ function renderCards() {
     const container = document.getElementById('card-container');
     container.innerHTML = '';
     
-    // Циклическая прокрутка
     if (filteredProfiles.length > 0 && currentIndex >= filteredProfiles.length) {
         currentIndex = 0;
     }
@@ -238,9 +232,7 @@ function renderCards() {
     if (nextIndex >= filteredProfiles.length) nextIndex = 0;
 
     if (filteredProfiles.length > 0) {
-        // Следующая карта (подложка)
         container.appendChild(createCardElement(filteredProfiles[nextIndex], 'next'));
-        // Текущая карта (активная)
         container.appendChild(createCardElement(filteredProfiles[currentIndex], 'active'));
         
         const controls = document.createElement('div');
@@ -251,7 +243,7 @@ function renderCards() {
         `;
         container.appendChild(controls);
     } else {
-         container.innerHTML = `<div style="text-align:center; color:#555; padding-top:100px;"><h3>Никого не найдено :(</h3></div>`;
+         container.innerHTML = `<div style="text-align:center; color:#555; padding-top:100px;"><h3>No profiles found :(</h3></div>`;
     }
 }
 
@@ -294,7 +286,6 @@ function handleSwipe(dir) {
     
     card.classList.add(dir === 'left' ? 'swipe-left' : 'swipe-right');
     
-    // Имитация задержки перед показом следующей карты
     setTimeout(() => { 
         currentIndex++; 
         renderCards(); 
@@ -311,7 +302,7 @@ function previewPhoto(input) {
         const reader = new FileReader();
         reader.onload = function(e) { 
             document.getElementById('profile-preview').src = e.target.result;
-            myProfileData.img = e.target.result; // Сохраняем в объект профиля
+            myProfileData.img = e.target.result; 
         }
         reader.readAsDataURL(input.files[0]);
     }
@@ -319,7 +310,7 @@ function previewPhoto(input) {
 
 function renderTagsEditor() {
     const container = document.getElementById('tags-selector');
-    if(!container) return; // Защита от ошибок, если элемент не найден
+    if(!container) return; 
     
     container.innerHTML = '';
     availableTags.forEach(tag => {
@@ -338,7 +329,7 @@ function toggleTag(tag, el) {
         el.classList.remove('selected');
     } else {
         if(myTags.length >= 3) { 
-            showToast("Максимум 3 тега!", "error"); 
+            showToast("Max 3 tags allowed!", "error"); // ENGLISH
             return; 
         }
         myTags.push(tag);
@@ -352,31 +343,28 @@ function saveProfile() {
     const desc = document.getElementById('input-desc').value;
 
     if(myTags.length === 0) { 
-        showToast("Выберите хотя бы 1 тег", "error"); 
+        showToast("Select at least 1 tag", "error"); // ENGLISH
         return; 
     }
 
-    // Сохраняем данные
     myProfileData.name = nick;
     myProfileData.game = game;
     myProfileData.desc = desc;
     myProfileData.tags = myTags;
 
     const btn = document.getElementById('save-btn');
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Сохранение...';
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...'; // ENGLISH
     
     setTimeout(() => {
         isProfileCompleted = true;
-        showToast("Анкета успешно создана!", "success");
-        btn.innerHTML = 'Сохранить';
+        showToast("Profile saved successfully!", "success"); // ENGLISH
+        btn.innerHTML = 'Save Changes'; // ENGLISH
         
-        // Переходим на главную
         switchTab('home');
     }, 800);
 }
 
 // --- EXPOSE TO WINDOW ---
-// Обязательно делаем функции доступными для HTML onclick="..."
 window.showToast = showToast;
 window.toggleAuth = toggleAuth;
 window.updateInterface = updateInterface;
@@ -391,8 +379,8 @@ window.toggleTag = toggleTag;
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Если нужно что-то инициализировать при старте
     console.log("App initialized");
 });
+
 
 
