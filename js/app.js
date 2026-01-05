@@ -7,6 +7,8 @@ const CONFIG = {
     registerUrl: "https://google.com/search?q=registration_form"
 };
 
+const availableTags = ["No Toxic", "Tryhard", "Chill", "Mic On", "18+", "Funny", "Newbie", "Pro"];
+
 // --- STATE ---
 let isLoggedIn = false;
 let isProfileCompleted = false; 
@@ -385,3 +387,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Если нужно что-то инициализировать при старте
     console.log("App initialized");
 });
+
