@@ -127,9 +127,16 @@ function switchTab(tabName) {
     }
 
     // Рендер контента в зависимости от вкладки
-    if(tabName === 'home') renderDashboard();
+     if(tabName === 'home') renderDashboard();
     if(tabName === 'tournaments') renderTournaments();
-    if(tabName === 'profile') renderTagsEditor();
+    
+    // Используем setTimeout, чтобы код выполнился ПОСЛЕ того, 
+    // как браузер покажет div#view-profile
+    if(tabName === 'profile') {
+        setTimeout(() => {
+            renderTagsEditor();
+        }, 10);
+    }
 }
 
 // --- HOME DASHBOARD ---
@@ -387,4 +394,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Если нужно что-то инициализировать при старте
     console.log("App initialized");
 });
+
 
