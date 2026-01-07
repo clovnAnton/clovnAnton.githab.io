@@ -103,19 +103,56 @@ body::after {
 @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 
 /* --- HEADER --- */
-header { 
-    height: 70px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 0 40px; 
-    
-    background: rgba(15, 17, 21, 0.85); 
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,0.05); 
-    
-    z-index: 100; 
-    flex-shrink: 0; 
+header{
+  height: 70px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* left | center | right */
+  align-items: center;
+  padding: 0 40px;
+  background: rgba(15, 17, 21, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.logo-container{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-self: start;
+}
+
+/* online */
+.header-stats{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* center nav */
+#header-nav{
+  justify-self: center;
+}
+
+/* right auth */
+.auth-container{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  justify-self: end;
+}
+
+/* PUBLIC (not logged in): center the online counter in the header */
+header:not(.logged-in) .header-stats{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .logo { font-size: 22px; font-weight: 800; cursor: pointer; text-shadow: 0 0 10px rgba(108, 92, 231, 0.3); } 
 .logo span { color: var(--primary); }
@@ -401,6 +438,7 @@ header {
     border: 1px solid var(--gold); width: 400px; text-align: center; 
     box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 }
+
 
 
 
