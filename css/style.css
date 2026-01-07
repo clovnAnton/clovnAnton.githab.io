@@ -310,6 +310,54 @@ header {
 .lobby-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
 
 
+#view-search {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+}
+
+/* 2. Если мы в режиме "full-width" (без боковых панелей), все равно держим рамки */
+.app-container.full-width {
+    max-width: 900px !important;
+    margin: 40px auto !important;
+    display: block !important; /* Убираем грид, чтобы встало по центру */
+}
+
+/* 3. Центрируем карточки лобби (те, что на скриншоте) */
+.landing-grid {
+    max-width: 900px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+}
+
+/* 4. Задаем карточкам фиксированную высоту и отступы, чтобы не были "сосисками" */
+.lobby-card {
+    width: 100% !important;
+    max-width: 800px !important; /* Не шире 800px */
+    margin: 0 auto !important;   /* По центру */
+    padding: 20px 30px !important;
+    box-sizing: border-box !important;
+}
+
+/* 5. Выравниваем текст "Your perfect squad..." */
+.hero-section {
+    max-width: 1000px !important;
+    margin: 0 auto !important;
+    padding-top: 60px !important;
+}
+
+.hero-title, .hero-subtitle {
+    text-align: center !important;
+}
+
+/* 6. Кнопки (Find Teammate) тоже по центру */
+.hero-section div {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 20px !important;
+}
 
 
 
