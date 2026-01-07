@@ -67,14 +67,20 @@ function renderLandingProfiles() {
 }
 
 function selectOption(type, value, el) {
-    // Обновляем визуально
-    const container = el.parentElement;
+    // Ищем контейнер по ID
+    const container = document.getElementById(`${type}-selector`);
+    if(!container) return;
+
+    // Убираем класс selected у всех соседей
     container.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('selected'));
+    
+    // Ставим класс нажатому
     el.classList.add('selected');
     
-    // Сохраняем в скрытый input
+    // Пишем значение в скрытый input
     document.getElementById(`input-${type}`).value = value;
 }
+window.selectOption = selectOption; // Важно!
 
 function updateCharCount(textarea) {
     const count = textarea.value.length;
@@ -455,6 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
     renderLandingProfiles(); // <-- Вызываем рендер анкет для главной
 });
+
 
 
 
