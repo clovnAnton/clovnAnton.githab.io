@@ -19,7 +19,8 @@ let currentIndex = 0;
 let filteredProfiles = [...dbProfiles];
 let myTags = [];
 let myProfileData = { 
-    name: "Player_One", 
+    name: "Player_One",
+    gender: "Male",
     game: "CS2", 
     desc: "...", 
     img: "https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg" 
@@ -353,15 +354,17 @@ function toggleTag(tag, el) {
 
 function saveProfile() {
     const nick = document.getElementById('input-nick').value;
+    const gender = document.getElementById('input-gender').value; // <-- Читаем пол
     const game = document.getElementById('input-game').value;
     const desc = document.getElementById('input-desc').value;
 
     if(myTags.length === 0) { 
-        showToast("Select at least 1 tag", "error"); // ENGLISH
+        showToast("Select at least 1 tag", "error"); 
         return; 
     }
 
     myProfileData.name = nick;
+    myProfileData.gender = gender; // <-- Сохраняем пол
     myProfileData.game = game;
     myProfileData.desc = desc;
     myProfileData.tags = myTags;
@@ -395,6 +398,7 @@ window.toggleTag = toggleTag;
 document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
 });
+
 
 
 
