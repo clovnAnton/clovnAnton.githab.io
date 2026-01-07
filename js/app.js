@@ -12,6 +12,7 @@ const availableTags = ["No Toxic", "Tryhard", "Chill", "Mic On", "18+", "Funny",
 
 // --- STATE ---
 let isLoggedIn = false;
+let profileQueue = [];
 let isProfileCompleted = false; 
 let currentIndex = 0;
 let filteredProfiles = [...dbProfiles];
@@ -248,44 +249,60 @@ function renderTournaments() {
 }
 
 // --- CARDS & SEARCH ---
-function setFilter(game, el) {
-    document.querySelectorAll('.filter-opt').forEach(e => e.classList.remove('selected'));
-    el.classList.add('selected');
-    currentIndex = 0;
-    
-    if(game === 'all') {
-        filteredProfiles = [...dbProfiles];
-    } else {
-        filteredProfiles = dbProfiles.filter(p => p.game === game);
+function setFilter(type, value, el) {
+    // Сброс визуала (для игр и пола)
+    if(type === 'game') {
+        document.querySelectorAll('#filter-game .filter-opt').forEach(e => e.classList.remove('selected'));
+        // Сбрасываем фильтр пола, если меняем игру (опционально)
+    } else if(type === 'gender') {
+        document.querySelectorAll('#filter-gender .filter-opt').forEach(e => e.classList.remove('selected'));
     }
+    el.classList.add('selected');
+
+    // Логика фильтрации
+    const activeGame = document.querySelector('#filter-game .selected')?.dataset.val || 'all';
+    const activeGender = document.querySelector('#filter-gender .selected')?.dataset.val || 'all';
+
+    filteredProfiles = dbProfiles.filter(p => {
+        const gameMatch = activeGame === 'all' || p.game === activeGame;
+        const genderMatch = activeGender === 'all' || p.gender === activeGender;
+        return gameMatch && genderMatch;
+    });
+
+    // Перемешиваем и создаем новую очередь
+    profileQueue = [...filteredProfiles].sort(() => Math.random() - 0.5);
     renderCards();
 }
 
 function renderCards() {
     const container = document.getElementById('card-container');
     container.innerHTML = '';
-    
-    if (filteredProfiles.length > 0 && currentIndex >= filteredProfiles.length) {
-        currentIndex = 0;
-    }
-    
-    let nextIndex = currentIndex + 1;
-    if (nextIndex >= filteredProfiles.length) nextIndex = 0;
 
-    if (filteredProfiles.length > 0) {
-        container.appendChild(createCardElement(filteredProfiles[nextIndex], 'next'));
-        container.appendChild(createCardElement(filteredProfiles[currentIndex], 'active'));
-        
-        const controls = document.createElement('div');
-        controls.className = 'actions-floating';
-        controls.innerHTML = `
-            <button class="act-btn btn-pass" onclick="handleSwipe('left')"><i class="fa-solid fa-xmark"></i></button>
-            <button class="act-btn btn-like" onclick="handleSwipe('right')"><i class="fa-solid fa-heart"></i></button>
-        `;
-        container.appendChild(controls);
-    } else {
-         container.innerHTML = `<div style="text-align:center; color:#555; padding-top:100px;"><h3>No profiles found :(</h3></div>`;
+    if (profileQueue.length === 0) {
+        container.innerHTML = `<div style="text-align:center; color:#555; padding-top:100px;">
+            <h3>No more profiles!</h3>
+            <p>Change filters to see more.</p>
+            <button class="cta-btn outline" onclick="setFilter('game', 'all', document.querySelector('[data-val=all]'))">Reset Filters</button>
+        </div>`;
+        return;
     }
+
+    // Берем первого и второго из очереди
+    const currentProfile = profileQueue[0];
+    const nextProfile = profileQueue.length > 1 ? profileQueue[1] : null;
+
+    if (nextProfile) container.appendChild(createCardElement(nextProfile, 'next'));
+    container.appendChild(createCardElement(currentProfile, 'active'));
+
+    // Кнопки действий (Добавлен Super Like)
+    const controls = document.createElement('div');
+    controls.className = 'actions-floating';
+    controls.innerHTML = `
+        <button class="act-btn btn-pass" onclick="handleSwipe('left')"><i class="fa-solid fa-xmark"></i></button>
+        <button class="act-btn btn-super" onclick="openSuperLikeModal()"><i class="fa-solid fa-star"></i></button>
+        <button class="act-btn btn-like" onclick="handleSwipe('right')"><i class="fa-solid fa-heart"></i></button>
+    `;
+    container.appendChild(controls);
 }
 
 function createCardElement(data, type) {
@@ -341,7 +358,7 @@ function handleSwipe(dir) {
     card.classList.add(dir === 'left' ? 'swipe-left' : 'swipe-right');
     
     setTimeout(() => { 
-        currentIndex++; 
+        profileQueue.shift(); // Удаляем показанного
         renderCards(); 
     }, 300);
 }
@@ -438,6 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
     renderLandingProfiles(); // <-- Вызываем рендер анкет для главной
 });
+
 
 
 
