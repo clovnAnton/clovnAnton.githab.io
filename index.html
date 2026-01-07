@@ -38,26 +38,29 @@
         <h1>Your perfect squad<br>starts here.</h1>
         <p>Stop playing with randoms. Find teammates by rank and vibe.</p>
         <div style="display: flex; justify-content: center; gap: 20px;">
-            <button class="cta-btn" onclick="redirectToReg()">Find Lobby</button>
-            <button class="cta-btn outline" onclick="redirectToReg()">Create Profile</button>
+            <button class="cta-btn" onclick="redirectToReg()">Find Teammate</button>
+            <button class="cta-btn outline" onclick="redirectToReg()">Join Tournaments</button>
         </div>
     </section>
 
     <div class="landing-container">
-        <main>
-            <h3 style="margin-bottom: 20px; color: var(--text-muted);">Active Lobbies</h3>
-            <!-- Карточки можно оставить как есть, данные в них все равно обновятся из JS, или заменить имена на английские -->
-            <div class="lobby-card">
-                <div class="player-info">
-                    <img src="https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg" class="avatar">
-                    <div><div style="font-weight: bold;">Nagibator2000</div><span class="game-tag">CS2</span></div>
-                </div>
-                <button class="cta-btn outline" style="padding: 5px 15px; font-size: 0.9rem;" onclick="redirectToReg()">Invite</button>
+        <!-- Добавили класс для отступа и сетки -->
+        <main style="margin-top: 20px;"> 
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h3 style="color: var(--text-muted); margin: 0;">Recent Profiles</h3>
+                <span style="color: var(--primary); cursor: pointer; font-size: 0.9rem;" onclick="redirectToReg()">View All <i class="fa-solid fa-arrow-right"></i></span>
             </div>
-            <!-- ... остальные карточки лендинга ... -->
+
+            <div id="landing-profiles-list">
+                <!-- Сюда JS теперь будет добавлять анкеты -->
+            </div>
+            
+            <button class="cta-btn outline" style="width: 100%; margin-top: 15px; color: var(--text-muted); border-color: var(--border);" onclick="redirectToReg()">
+                Sign up to see more profiles
+            </button>
         </main>
         
-        <aside>
+        <aside style="margin-top: 20px;">
             <div class="tournament-card">
                 <div class="badge-live">LIVE</div>
                 <h3>Opening Cup #1</h3>
@@ -134,51 +137,55 @@
 
             <!-- PROFILE EDITOR -->
             <div id="view-profile" class="app-view hidden">
-                <h2 style="margin-bottom: 20px;">Edit Profile</h2>
-                <div class="panel">
-                    <div class="photo-upload-container" onclick="triggerPhotoUpload()">
-                        <img id="profile-preview" src="https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg" class="profile-img-preview">
-                        <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
-                        <input type="file" id="photo-input" hidden onchange="previewPhoto(this)">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Nickname</label>
-                        <input type="text" class="form-input" id="input-nick" value="Player_One">
-                    </div>
-
-                    <div class="form-group">
-    <label class="form-label">Gender</label>
-    <select class="form-select" id="input-gender">
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-    </select>
-    </div>
-                  
-                    <div class="form-group">
-                        <label class="form-label">Main Game</label>
-                        <select class="form-select" id="input-game">
-                            <option>CS2</option>
-                            <option>Rust</option>
-                            <option>Dota 2</option>
-                            <option>Deadlock</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Tags (max 3)</label>
-                        <div class="tags-container" id="tags-selector"></div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">About Me</label>
-                        <textarea class="form-textarea" id="input-desc">Looking for chill teammates to play in the evening.</textarea>
-                    </div>
-                    
-                    <button id="save-btn" class="cta-btn" style="width: 100%;" onclick="saveProfile()">Save Changes</button>
-                </div>
+    <h2 style="margin-bottom: 20px;">Edit Profile</h2>
+    <div class="panel">
+        <div class="photo-upload-container" onclick="triggerPhotoUpload()">
+            <img id="profile-preview" src="https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg" class="profile-img-preview">
+            <div class="upload-icon"><i class="fa-solid fa-camera"></i></div>
+            <input type="file" id="photo-input" hidden onchange="previewPhoto(this)">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Nickname</label>
+            <input type="text" class="form-input" id="input-nick" value="Player_One">
+        </div>
+        
+        <!-- NEW GENDER SELECTOR (Custom UI) -->
+        <div class="form-group">
+            <label class="form-label">Gender</label>
+            <div class="custom-select-container" id="gender-selector">
+                <div class="select-option selected" onclick="selectOption('gender', 'Male', this)"><i class="fa-solid fa-mars"></i> Male</div>
+                <div class="select-option" onclick="selectOption('gender', 'Female', this)"><i class="fa-solid fa-venus"></i> Female</div>
             </div>
-        </main>
+            <input type="hidden" id="input-gender" value="Male"> <!-- Скрытое поле для хранения значения -->
+        </div>
+        
+        <!-- NEW GAME SELECTOR (Custom UI) -->
+        <div class="form-group">
+            <label class="form-label">Main Game</label>
+            <div class="custom-select-container" id="game-selector">
+                <div class="select-option selected" onclick="selectOption('game', 'CS2', this)">CS2</div>
+                <div class="select-option" onclick="selectOption('game', 'Dota 2', this)">Dota 2</div>
+                <div class="select-option" onclick="selectOption('game', 'Rust', this)">Rust</div>
+                <div class="select-option" onclick="selectOption('game', 'Deadlock', this)">Deadlock</div>
+            </div>
+            <input type="hidden" id="input-game" value="CS2">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Tags (max 3)</label>
+            <div class="tags-container" id="tags-selector"></div>
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">About Me (Max 150 chars)</label>
+            <textarea class="form-textarea" id="input-desc" maxlength="150" oninput="updateCharCount(this)">Looking for chill teammates to play in the evening.</textarea>
+            <div id="char-count" style="text-align: right; font-size: 0.8rem; color: #555; margin-top: 5px;">0 / 150</div>
+        </div>
+        
+        <button id="save-btn" class="cta-btn" style="width: 100%;" onclick="saveProfile()">Save Changes</button>
+    </div>
+</div>
 
         <!-- Sidebar Right -->
         <aside id="sidebar-right" class="sidebar hidden">
@@ -200,6 +207,7 @@
 
 </body>
 </html>
+
 
 
 
