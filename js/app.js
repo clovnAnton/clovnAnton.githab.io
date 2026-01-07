@@ -14,7 +14,7 @@ const availableTags = [
 // --- STATE ---
 let isLoggedIn = false;
 let isProfileCompleted = false; 
-let profileQueue = []; // Случайная очередь
+let profileQueue = [];
 let filteredProfiles = []; 
 let myTags = [];
 let superLikeLogs = [];
@@ -27,11 +27,9 @@ let myProfileData = {
     img: "https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg" 
 };
 
-// Проверяем данные при старте
+// Защита от пустых данных
 if (typeof dbProfiles !== 'undefined' && Array.isArray(dbProfiles)) {
     filteredProfiles = [...dbProfiles];
-} else {
-    console.error("Error: dbProfiles not loaded or empty.");
 }
 
 // --- UTILS ---
@@ -52,13 +50,11 @@ function renderLandingProfiles() {
     const container = document.getElementById('landing-profiles-list');
     if(!container) return;
     
-    // Если данных нет, показываем заглушку
     if (!dbProfiles || dbProfiles.length === 0) {
-        container.innerHTML = '<p style="color:#777;">No profiles available at the moment.</p>';
+        container.innerHTML = '<p style="color:#777;">No profiles available.</p>';
         return;
     }
 
-    // Берем 3 случайные анкеты (копия массива -> сортировка -> срез)
     const previewProfiles = [...dbProfiles].sort(() => 0.5 - Math.random()).slice(0, 3);
     
     container.innerHTML = '';
@@ -86,15 +82,13 @@ function startLiveStats() {
     if(!el) return;
 
     let count = 1245; 
-
     setInterval(() => {
         let change = Math.floor(Math.random() * 11) - 3; 
         count += change;
-        
         el.innerText = count.toLocaleString() + " Online";
         el.style.color = "#fff";
         el.style.transition = "color 0.3s";
-        setTimeout(() => { el.style.color = "#aaa"; }, 500);
+        setTimeout(() => { if(el) el.style.color = "#aaa"; }, 500);
     }, 4000); 
 }
 
@@ -120,7 +114,6 @@ function updateInterface() {
         authBtn.style.borderColor = '#e74c3c';
         authBtn.title = "Log Out";
         
-        // При входе сразу инициализируем случайную очередь
         profileQueue = [...dbProfiles].sort(() => Math.random() - 0.5);
         switchTab('home'); 
     } else {
@@ -194,7 +187,7 @@ function renderDashboard() {
         container.innerHTML = `
             <div class="dash-state-container">
                 <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Welcome!</h1>
-                <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1.2rem;">To start swiping and finding teammates, create your profile card.</p>
+                <p style="color: var(--text-muted); margin-bottom: 30px; font-size: 1.2rem;">To start swiping, create your profile card.</p>
                 <button class="cta-btn" onclick="switchTab('profile')">Create Profile <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         `;
@@ -445,7 +438,8 @@ function sendSuperLike() {
     showToast("Super Like sent!", "success");
 }
 
-// --- EXPOSE ---
+// --- INIT (FIXED) ---
+// Делаем функции глобальными, чтобы HTML мог их видеть
 window.showToast = showToast;
 window.toggleAuth = toggleAuth;
 window.updateInterface = updateInterface;
@@ -463,10 +457,11 @@ window.openSuperLikeModal = openSuperLikeModal;
 window.closeModal = closeModal;
 window.sendSuperLike = sendSuperLike;
 
-// --- INIT CALLS ---
-console.log("App initialized");
+// Запускаем
+console.log("App initialized successfully");
 renderLandingProfiles();
 startLiveStats();
+
 
 
 
