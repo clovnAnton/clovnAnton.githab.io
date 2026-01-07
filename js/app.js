@@ -265,10 +265,12 @@ function getCardHTML(data) {
 
     // Логика значка пола
     let genderIcon = '';
-    if (data.gender === 'male') {
-        genderIcon = '<i class="fa-solid fa-mars" style="color: #74b9ff; margin-left: 8px;" title="Male"></i>';
-    } else if (data.gender === 'female') {
-        genderIcon = '<i class="fa-solid fa-venus" style="color: #ff7675; margin-left: 8px;" title="Female"></i>';
+    if (data.gender === 'Male') {
+        genderIcon = '<i class="fa-solid fa-mars" style="color: #3498db; margin-left: 8px;" title="Male"></i>';
+    } else if (data.gender === 'Female') {
+        genderIcon = '<i class="fa-solid fa-venus" style="color: #e84393; margin-left: 8px;" title="Female"></i>';
+    } else if (data.gender === 'Non-binary') {
+        genderIcon = '<i class="fa-solid fa-genderless" style="color: #a29bfe; margin-left: 8px;" title="Non-binary"></i>';
     }
 
     return `
@@ -398,6 +400,7 @@ window.toggleTag = toggleTag;
 document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
 });
+
 
 
 
