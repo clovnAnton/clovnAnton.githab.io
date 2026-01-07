@@ -492,13 +492,19 @@ header:not(.logged-in) .header-stats{
         padding: 0 15px 100px;
         box-sizing: border-box;
     }
-    
-    .lobby-card {
+     .lobby-card {
         width: 100%;
         box-sizing: border-box;
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
+        
+        /* Добавляем явные границы для мобилки */
+        background: rgba(30, 33, 40, 0.95); /* Чуть темнее фон */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Более заметная рамка */
+        border-radius: 12px; /* Скругление */
+        padding: 20px; /* Внутренние отступы */
+        margin-bottom: 15px; /* Отступ между карточками */
     }
     .lobby-card .cta-btn {
         width: 100%;
@@ -506,15 +512,31 @@ header:not(.logged-in) .header-stats{
     }
 
     /* 4. TOURNAMENTS */
-    .tournament-card {
+     .tournament-card {
         width: 100% !important;
-        max-width: 100%;
-        height: auto;
-        min-height: 350px;
+        max-width: 100%; /* Не даем вылезать за экран */
+        
+        /* ЖЕСТКАЯ ВЫСОТА, как просили */
+        height: 400px; 
+        min-height: 400px; 
+        
+        /* Центрирование контента */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        box-sizing: border-box;
     }
+
     .skin-img {
-        height: 160px;
-        margin-top: 30px;
+        /* Картинка подстраивается под жесткую высоту */
+        width: 100%; 
+        height: 160px; /* Фиксированная высота для картинки на телефоне */
+        object-fit: contain; /* Картинка ужмется, но не обрежется */
+        margin: 10px auto;
+        
+        /* Сброс лишних отступов, если были */
+        transform: rotate(-5deg); /* Чуть меньший наклон для компактности */
     }
     
     .tourney-list { grid-template-columns: 1fr; }
@@ -531,6 +553,7 @@ header:not(.logged-in) .header-stats{
         bottom: 80px;
     }
 }
+
 
 
 
