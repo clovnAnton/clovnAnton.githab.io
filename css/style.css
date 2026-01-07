@@ -236,6 +236,15 @@ header:not(.logged-in) .header-stats{
 }
 
 .tournament-card { 
+     /* Фиксируем размеры карточки */
+  width: 100%;
+  max-width: 400px; /* Можно менять по вкусу */
+  height: 450px;    /* Фиксированная высота */
+  
+  /* Flexbox для вертикального выравнивания содержимого */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Раскидываем контент (заголовок сверху, кнопка снизу) */
     background: linear-gradient(145deg, rgba(24, 27, 33, 0.9) 0%, rgba(30, 27, 21, 0.9) 100%); 
     backdrop-filter: blur(10px);
     border: 1px solid var(--gold); 
@@ -247,12 +256,13 @@ header:not(.logged-in) .header-stats{
     padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; animation: pulse 2s infinite; 
 }
 .skin-img { 
-    /* Фикс размера */
-    max-width: 100%; 
-    max-height: 200px; /* Ограничиваем высоту, чтобы карточка не была огромной */
-    width: auto; 
-    display: block;
-    margin: 20px auto; 
+    /* Заставляем картинку вписываться */
+  width: 100%;
+  height: 220px;       /* Отводим картинке конкретное место */
+  object-fit: contain; /* Картинка ужмется пропорционально, не обрезаясь */
+  
+  display: block;
+  margin: 10px auto;
     
     /* Эффекты */
     transform: rotate(-10deg); 
@@ -441,6 +451,7 @@ header:not(.logged-in) .header-stats{
     border: 1px solid var(--gold); width: 400px; text-align: center; 
     box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 }
+
 
 
 
