@@ -261,32 +261,17 @@ header:not(.logged-in) .header-stats{
   object-fit: contain;
   display: block;
   margin: 10px auto;
-  
-  /* Исходное положение: чуть наклонен */
   transform: rotate(-10deg);
-  
-  /* Плавный переход для всех свойств */
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-  /* cubic-bezier делает анимацию "пружинистой" */
-
-  /* Легкая тень в покое */
+  transition: transform 0.4s ease, filter 0.4s ease; /* Упростим transition для теста */
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+  will-change: transform, filter; /* Подсказка браузеру для оптимизации */
 }
 
-/* Эффект при наведении на карточку */
 .tournament-card:hover .skin-img {
-  /* 1. АНИМАЦИЯ: 
-     Выравниваем (rotate 0), увеличиваем (scale 1.15) 
-     и приподнимаем вверх (translateY -10px) */
   transform: rotate(0deg) scale(1.15) translateY(-10px);
-
-  /* 2. ПОДСВЕТКА (ОБВОДКА):
-     Используем слоеные тени для эффекта мощного свечения */
-  filter: 
-    drop-shadow(0 0 2px #fff) /* Тонкий белый контур (как обводка) */
-    drop-shadow(0 0 10px var(--gold)) /* Золотое свечение вокруг */
-    drop-shadow(0 0 25px rgba(253, 203, 110, 0.6)); /* Дальнее рассеивание */
+  filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 10px #fdcb6e) drop-shadow(0 0 25px rgba(253, 203, 110, 0.6));
 }
+
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
 /* --- APP GRID SYSTEM --- */
@@ -468,6 +453,7 @@ header:not(.logged-in) .header-stats{
     border: 1px solid var(--gold); width: 400px; text-align: center; 
     box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 }
+
 
 
 
