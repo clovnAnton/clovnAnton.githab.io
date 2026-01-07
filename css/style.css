@@ -215,8 +215,8 @@ header {
 /* --- APP GRID SYSTEM --- */
 .app-grid { 
     display: grid; 
-    grid-template-columns: 260px 1fr 300px; 
-    gap: 30px; 
+    grid-template-columns: 260px 1fr 260px; 
+    gap: 30px;
     max-width: 1600px; 
     margin: 0 auto; 
     padding: 30px; 
@@ -516,4 +516,5 @@ header {
     border: 1px solid #444;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
+
 
