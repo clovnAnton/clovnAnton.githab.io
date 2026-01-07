@@ -103,7 +103,9 @@ function updateInterface() {
     const app = document.getElementById('app-dashboard');
     const authBtn = document.getElementById('header-auth-btn');
     const nav = document.getElementById('header-nav');
-
+    const header = document.querySelector('header');
+if (header) header.classList.toggle('logged-in', isLoggedIn);
+    
     if (isLoggedIn) {
         landing.style.display = 'none';
         app.style.display = 'block'; 
@@ -461,6 +463,7 @@ window.sendSuperLike = sendSuperLike;
 console.log("App initialized successfully");
 renderLandingProfiles();
 startLiveStats();
+
 
 
 
