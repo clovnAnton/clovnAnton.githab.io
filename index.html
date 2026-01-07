@@ -189,15 +189,23 @@
 
         <!-- Sidebar Right -->
         <aside id="sidebar-right" class="sidebar hidden">
-            <div class="panel">
-                <h3 style="margin-bottom: 20px;">Filters</h3>
-                <div class="filter-opt selected" onclick="setFilter('all', this)"><div class="circle"></div> All Games</div>
-                <div class="filter-opt" onclick="setFilter('CS2', this)"><div class="circle"></div> CS2</div>
-                <div class="filter-opt" onclick="setFilter('Rust', this)"><div class="circle"></div> Rust</div>
-                <div class="filter-opt" onclick="setFilter('Dota 2', this)"><div class="circle"></div> Dota 2</div>
-                <div class="filter-opt" onclick="setFilter('Deadlock', this)"><div class="circle"></div> Deadlock</div>
-            </div>
-        </aside>
+    <div class="panel">
+        <h3 style="margin-bottom: 15px;">Game</h3>
+        <div id="filter-game">
+            <div class="filter-opt selected" data-val="all" onclick="setFilter('game', 'all', this)"><div class="circle"></div> All Games</div>
+            <div class="filter-opt" data-val="CS2" onclick="setFilter('game', 'CS2', this)"><div class="circle"></div> CS2</div>
+            <div class="filter-opt" data-val="Dota 2" onclick="setFilter('game', 'Dota 2', this)"><div class="circle"></div> Dota 2</div>
+            <!-- ... остальные игры ... -->
+        </div>
+
+        <h3 style="margin: 20px 0 15px;">Gender</h3>
+        <div id="filter-gender">
+            <div class="filter-opt selected" data-val="all" onclick="setFilter('gender', 'all', this)"><div class="circle"></div> Any</div>
+            <div class="filter-opt" data-val="Male" onclick="setFilter('gender', 'Male', this)"><div class="circle"></div> Male</div>
+            <div class="filter-opt" data-val="Female" onclick="setFilter('gender', 'Female', this)"><div class="circle"></div> Female</div>
+        </div>
+    </div>
+</aside>
 
     </div>
 </div>
@@ -207,6 +215,7 @@
 
 </body>
 </html>
+
 
 
 
