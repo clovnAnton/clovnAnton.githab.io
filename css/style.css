@@ -517,4 +517,7 @@ header {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
+.modal { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:200; display:flex; justify-content:center; align-items:center; }
+.modal-content { background: var(--bg-panel); padding: 30px; border-radius: 16px; border: 1px solid var(--gold); width: 400px; text-align: center; }
+.btn-super { color: var(--gold); border: 2px solid var(--gold); }
 
