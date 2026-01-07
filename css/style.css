@@ -474,6 +474,24 @@ header:not(.logged-in) .header-stats{
 
 @media (max-width: 768px) {
     /* --- HEADER --- */
+     /* HEADER FIXES */
+    header:not(.logged-in) .header-stats {
+        position: static; /* Отменяем абсолютное центрирование */
+        transform: none;
+        margin-left: 10px; /* Отступ от логотипа */
+        font-size: 0.75rem;
+    }
+    
+    .logo-container {
+        /* Разрешаем элементам логотипа сжиматься */
+        flex-shrink: 1; 
+        max-width: 50%;
+    }
+    
+    .logo {
+        font-size: 18px; /* Чуть уменьшаем лого */
+    }
+    
     header {
         padding: 0 15px; /* Меньше отступы */
         grid-template-columns: auto 1fr auto; /* Лого | Пусто | Кнопка */
@@ -551,6 +569,7 @@ header:not(.logged-in) .header-stats{
         margin-left: 0;
     }
 }
+
 
 
 
