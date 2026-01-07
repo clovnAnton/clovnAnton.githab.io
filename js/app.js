@@ -430,7 +430,37 @@ window.sendSuperLike = sendSuperLike;
 document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
     renderLandingProfiles();
+    // --- LIVE STATS ---
+function startLiveStats() {
+    const el = document.getElementById('online-count');
+    if(!el) return;
+
+    let count = 1245; // Стартовое число
+
+    setInterval(() => {
+        // Случайное изменение: от -3 до +7
+        let change = Math.floor(Math.random() * 11) - 3; 
+        count += change;
+        
+        // Обновляем текст
+        el.innerText = count.toLocaleString() + " Online";
+        
+        // Эффект мигания (вспышка белым)
+        el.style.color = "#fff";
+        el.style.transition = "color 0.3s";
+        setTimeout(() => {
+            el.style.color = "#aaa"; // Возвращаем серый цвет
+        }, 500);
+        
+    }, 4000); // Каждые 4 секунды
+}
+
+// Запуск при загрузке (если у тебя уже есть этот блок, просто добавь вызов внутри)
+document.addEventListener('DOMContentLoaded', () => {
+    // ... твой старый код инициализации ...
+    startLiveStats(); 
 });
+
 
 
 
