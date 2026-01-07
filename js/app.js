@@ -15,7 +15,7 @@ const availableTags = [
 let isLoggedIn = false;
 let isProfileCompleted = false; 
 let profileQueue = []; // Случайная очередь
-let filteredProfiles = [...dbProfiles];
+let filteredProfiles = []; 
 let myTags = [];
 let superLikeLogs = [];
 
@@ -27,9 +27,18 @@ let myProfileData = {
     img: "https://avatars.akamai.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg" 
 };
 
+// Проверяем данные при старте
+if (typeof dbProfiles !== 'undefined' && Array.isArray(dbProfiles)) {
+    filteredProfiles = [...dbProfiles];
+} else {
+    console.error("Error: dbProfiles not loaded or empty.");
+}
+
 // --- UTILS ---
 function showToast(message, type = 'error') {
     const container = document.getElementById('toast-container');
+    if(!container) return;
+    
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     let icon = type === 'error' ? '<i class="fa-solid fa-circle-exclamation"></i>' : '<i class="fa-solid fa-circle-check"></i>';
@@ -43,8 +52,14 @@ function renderLandingProfiles() {
     const container = document.getElementById('landing-profiles-list');
     if(!container) return;
     
-    // Берем 3 случайные анкеты
-    const previewProfiles = dbProfiles.sort(() => 0.5 - Math.random()).slice(0, 3);
+    // Если данных нет, показываем заглушку
+    if (!dbProfiles || dbProfiles.length === 0) {
+        container.innerHTML = '<p style="color:#777;">No profiles available at the moment.</p>';
+        return;
+    }
+
+    // Берем 3 случайные анкеты (копия массива -> сортировка -> срез)
+    const previewProfiles = [...dbProfiles].sort(() => 0.5 - Math.random()).slice(0, 3);
     
     container.innerHTML = '';
     previewProfiles.forEach(p => {
@@ -64,6 +79,23 @@ function renderLandingProfiles() {
             </div>
         `;
     });
+}
+
+function startLiveStats() {
+    const el = document.getElementById('online-count');
+    if(!el) return;
+
+    let count = 1245; 
+
+    setInterval(() => {
+        let change = Math.floor(Math.random() * 11) - 3; 
+        count += change;
+        
+        el.innerText = count.toLocaleString() + " Online";
+        el.style.color = "#fff";
+        el.style.transition = "color 0.3s";
+        setTimeout(() => { el.style.color = "#aaa"; }, 500);
+    }, 4000); 
 }
 
 // --- AUTH ---
@@ -202,27 +234,30 @@ function renderDashboard() {
 function renderTournaments() {
     const list = document.getElementById('tourney-list-container');
     list.innerHTML = '';
-    dbTournaments.forEach(t => {
-        let icon = getGameIcon(t.game);
-        list.innerHTML += `
-            <div class="tourney-item full">
-                <div style="display:flex; align-items:center; gap: 15px;">
-                    <div style="font-size: 1.5rem; width: 40px; text-align: center;">${icon}</div>
-                    <div class="tourney-meta">
-                        <h3>${t.title}</h3>
-                        <div style="color: var(--gold); font-weight: bold; font-size: 0.9rem;">Prize: ${t.prize}</div>
+    
+    if(dbTournaments) {
+        dbTournaments.forEach(t => {
+            let icon = getGameIcon(t.game);
+            list.innerHTML += `
+                <div class="tourney-item full">
+                    <div style="display:flex; align-items:center; gap: 15px;">
+                        <div style="font-size: 1.5rem; width: 40px; text-align: center;">${icon}</div>
+                        <div class="tourney-meta">
+                            <h3>${t.title}</h3>
+                            <div style="color: var(--gold); font-weight: bold; font-size: 0.9rem;">Prize: ${t.prize}</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="slots-badge">${t.slots}</span>
+                        <button class="btn-full" style="margin-left: 10px;">Full</button>
                     </div>
                 </div>
-                <div style="text-align: right;">
-                    <span class="slots-badge">${t.slots}</span>
-                    <button class="btn-full" style="margin-left: 10px;">Full</button>
-                </div>
-            </div>
-        `;
-    });
+            `;
+        });
+    }
 }
 
-// --- CARDS & SEARCH (NEW LOGIC) ---
+// --- CARDS & SEARCH ---
 function setFilter(type, value, el) {
     if(type === 'game') {
         document.querySelectorAll('#filter-game .filter-opt').forEach(e => e.classList.remove('selected'));
@@ -400,6 +435,8 @@ function openSuperLikeModal() { document.getElementById('super-like-modal').clas
 function closeModal() { document.getElementById('super-like-modal').classList.add('hidden'); }
 function sendSuperLike() {
     const msg = document.getElementById('super-msg').value;
+    if(profileQueue.length === 0) return;
+    
     const target = profileQueue[0]; 
     superLikeLogs.push({ to: target.name, msg: msg, date: new Date().toLocaleTimeString() });
     console.log("Super Likes Log:", superLikeLogs);
@@ -426,40 +463,12 @@ window.openSuperLikeModal = openSuperLikeModal;
 window.closeModal = closeModal;
 window.sendSuperLike = sendSuperLike;
 
-// --- INIT ---
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("App initialized");
-    renderLandingProfiles();
-    // --- LIVE STATS ---
-function startLiveStats() {
-    const el = document.getElementById('online-count');
-    if(!el) return;
+// --- INIT CALLS ---
+console.log("App initialized");
+renderLandingProfiles();
+startLiveStats();
 
-    let count = 1245; // Стартовое число
 
-    setInterval(() => {
-        // Случайное изменение: от -3 до +7
-        let change = Math.floor(Math.random() * 11) - 3; 
-        count += change;
-        
-        // Обновляем текст
-        el.innerText = count.toLocaleString() + " Online";
-        
-        // Эффект мигания (вспышка белым)
-        el.style.color = "#fff";
-        el.style.transition = "color 0.3s";
-        setTimeout(() => {
-            el.style.color = "#aaa"; // Возвращаем серый цвет
-        }, 500);
-        
-    }, 4000); // Каждые 4 секунды
-}
-
-// Запуск при загрузке (если у тебя уже есть этот блок, просто добавь вызов внутри)
-document.addEventListener('DOMContentLoaded', () => {
-    // ... твой старый код инициализации ...
-    startLiveStats(); 
-});
 
 
 
