@@ -164,9 +164,37 @@ header {
 .cta-btn.outline:hover { border-color: var(--text-main); background: rgba(255,255,255,0.05); }
 
 .landing-container { 
-    max-width: 1200px; margin: 0 auto; padding: 0 20px 50px; 
-    display: grid; grid-template-columns: 2fr 1fr; gap: 40px; 
-    position: relative; z-index: 2; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 20px 50px; 
+    
+    /* ИЗМЕНЕНО: Используем Flexbox вместо Grid для большей гибкости */
+    display: flex; 
+    gap: 40px; 
+    flex-wrap: wrap; /* Позволяет блокам переноситься на мобильных */
+    
+    position: relative; 
+    z-index: 2; 
+}
+
+/* Левая колонка (Анкеты) */
+.landing-container main {
+    flex: 1; /* Занимает все свободное место */
+    min-width: 300px;
+}
+
+/* Правая колонка (Турнир) */
+.landing-container aside {
+    flex: 0 0 350px; /* Фиксированная ширина для турнира */
+    min-width: 300px;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 900px) {
+    .landing-container aside {
+        flex: 1; /* На планшетах растягивается */
+        width: 100%;
+    }
 }
 
 .lobby-card { 
@@ -401,6 +429,7 @@ header {
     border: 1px solid var(--gold); width: 400px; text-align: center; 
     box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 }
+
 
 
 
