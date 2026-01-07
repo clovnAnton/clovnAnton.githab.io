@@ -297,7 +297,141 @@ function getCardHTML(data) {
                 ${tags.map(t => `<span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px; font-size:0.8rem;">${t}</span>`).join('')}
             </div>
             <p style="color:#aaa; font-size:0.9rem;">"${data.desc}"</p>
-        </
+        </div>
+    `;
+}
+
+function getGameIcon(gameName) {
+    if(gameName === 'CS2') return '<i class="fa-solid fa-crosshairs"></i>';
+    if(gameName === 'Rust') return '<i class="fa-solid fa-radiation"></i>';
+    if(gameName === 'Dota 2') return '<i class="fa-brands fa-d-and-d"></i>';
+    if(gameName === 'Deadlock') return '<i class="fa-solid fa-ghost"></i>';
+    return '<i class="fa-solid fa-gamepad"></i>';
+}
+
+function handleSwipe(dir) {
+    const card = document.getElementById('active-card');
+    if(!card) return;
+    card.classList.add(dir === 'left' ? 'swipe-left' : 'swipe-right');
+    setTimeout(() => { 
+        profileQueue.shift(); 
+        renderCards(); 
+    }, 300);
+}
+
+// --- PROFILE EDITOR ---
+function triggerPhotoUpload() { document.getElementById('photo-input').click(); }
+
+function previewPhoto(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) { 
+            document.getElementById('profile-preview').src = e.target.result;
+            myProfileData.img = e.target.result; 
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function renderTagsEditor() {
+    const container = document.getElementById('tags-selector');
+    if(!container) return; 
+    container.innerHTML = '';
+    availableTags.forEach(tag => {
+        const isSelected = myTags.includes(tag);
+        const el = document.createElement('div');
+        el.className = `tag-option ${isSelected ? 'selected' : ''}`;
+        el.innerText = tag;
+        el.onclick = () => toggleTag(tag, el);
+        container.appendChild(el);
+    });
+}
+
+function toggleTag(tag, el) {
+    if (myTags.includes(tag)) {
+        myTags = myTags.filter(t => t !== tag);
+        el.classList.remove('selected');
+    } else {
+        if(myTags.length >= 3) { showToast("Max 3 tags allowed!", "error"); return; }
+        myTags.push(tag);
+        el.classList.add('selected');
+    }
+}
+
+function selectOption(type, value, el) {
+    const container = document.getElementById(`${type}-selector`);
+    if(!container) return;
+    container.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById(`input-${type}`).value = value;
+}
+
+function updateCharCount(textarea) {
+    document.getElementById('char-count').innerText = `${textarea.value.length} / 150`;
+}
+
+function saveProfile() {
+    const nick = document.getElementById('input-nick').value;
+    const gender = document.getElementById('input-gender').value;
+    const game = document.getElementById('input-game').value;
+    const desc = document.getElementById('input-desc').value;
+
+    if(myTags.length === 0) { showToast("Select at least 1 tag", "error"); return; }
+
+    myProfileData.name = nick;
+    myProfileData.gender = gender;
+    myProfileData.game = game;
+    myProfileData.desc = desc;
+    myProfileData.tags = myTags;
+
+    const btn = document.getElementById('save-btn');
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+    
+    setTimeout(() => {
+        isProfileCompleted = true;
+        showToast("Profile saved successfully!", "success");
+        btn.innerHTML = 'Save Changes';
+        switchTab('home');
+    }, 800);
+}
+
+// --- SUPER LIKE ---
+function openSuperLikeModal() { document.getElementById('super-like-modal').classList.remove('hidden'); }
+function closeModal() { document.getElementById('super-like-modal').classList.add('hidden'); }
+function sendSuperLike() {
+    const msg = document.getElementById('super-msg').value;
+    const target = profileQueue[0]; 
+    superLikeLogs.push({ to: target.name, msg: msg, date: new Date().toLocaleTimeString() });
+    console.log("Super Likes Log:", superLikeLogs);
+    closeModal();
+    handleSwipe('right'); 
+    showToast("Super Like sent!", "success");
+}
+
+// --- EXPOSE ---
+window.showToast = showToast;
+window.toggleAuth = toggleAuth;
+window.updateInterface = updateInterface;
+window.redirectToReg = redirectToReg;
+window.switchTab = switchTab;
+window.setFilter = setFilter;
+window.handleSwipe = handleSwipe;
+window.triggerPhotoUpload = triggerPhotoUpload;
+window.previewPhoto = previewPhoto;
+window.saveProfile = saveProfile;
+window.toggleTag = toggleTag;
+window.selectOption = selectOption;
+window.updateCharCount = updateCharCount;
+window.openSuperLikeModal = openSuperLikeModal;
+window.closeModal = closeModal;
+window.sendSuperLike = sendSuperLike;
+
+// --- INIT ---
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("App initialized");
+    renderLandingProfiles();
+});
+
 
 
 
