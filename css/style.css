@@ -255,21 +255,38 @@ header:not(.logged-in) .header-stats{
     position: absolute; top: 15px; right: 15px; background: #e74c3c; color: white; 
     padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.7rem; animation: pulse 2s infinite; 
 }
-.skin-img { 
-    /* Заставляем картинку вписываться */
+.skin-img {
   width: 100%;
-  height: 220px;       /* Отводим картинке конкретное место */
-  object-fit: contain; /* Картинка ужмется пропорционально, не обрезаясь */
-  
+  height: 220px;
+  object-fit: contain;
   display: block;
   margin: 10px auto;
-    
-    /* Эффекты */
-    transform: rotate(-10deg); 
-    filter: drop-shadow(0 0 15px rgba(253,203,110,0.4)); 
-    transition: 0.5s;
+  
+  /* Исходное положение: чуть наклонен */
+  transform: rotate(-10deg);
+  
+  /* Плавный переход для всех свойств */
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  /* cubic-bezier делает анимацию "пружинистой" */
+
+  /* Легкая тень в покое */
+  filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
 }
-.tournament-card:hover .skin-img { transform: rotate(-5deg) scale(1.05); }
+
+/* Эффект при наведении на карточку */
+.tournament-card:hover .skin-img {
+  /* 1. АНИМАЦИЯ: 
+     Выравниваем (rotate 0), увеличиваем (scale 1.15) 
+     и приподнимаем вверх (translateY -10px) */
+  transform: rotate(0deg) scale(1.15) translateY(-10px);
+
+  /* 2. ПОДСВЕТКА (ОБВОДКА):
+     Используем слоеные тени для эффекта мощного свечения */
+  filter: 
+    drop-shadow(0 0 2px #fff) /* Тонкий белый контур (как обводка) */
+    drop-shadow(0 0 10px var(--gold)) /* Золотое свечение вокруг */
+    drop-shadow(0 0 25px rgba(253, 203, 110, 0.6)); /* Дальнее рассеивание */
+}
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
 /* --- APP GRID SYSTEM --- */
@@ -451,6 +468,7 @@ header:not(.logged-in) .header-stats{
     border: 1px solid var(--gold); width: 400px; text-align: center; 
     box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 }
+
 
 
 
