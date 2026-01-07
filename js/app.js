@@ -7,7 +7,10 @@ const CONFIG = {
     registerUrl: "https://google.com/search?q=registration_form"
 };
 
-const availableTags = ["No Toxic", "Tryhard", "Chill", "Mic On", "18+", "Funny", "Newbie", "Pro"];
+const availableTags = ["No Toxic", "Tryhard", "Chill", "Mic On", "18+", "Funny", "Newbie", "Pro",
+    "English Only", "Russian Only", "Faceit 10", "Global", "Support", "Entry Fragger", "AWP",
+    "IGL", "Lurker", "Grind", "Weekend Only", "Night Owl", "Student", "Streamer",
+    "No Tilt", "Teamplay", "Voice Chat", "Discord", "Teamspeak", "Strategy", "Aggressive", "Passive"];
 
 // --- STATE ---
 let isLoggedIn = false;
@@ -392,6 +395,7 @@ window.toggleTag = toggleTag;
 document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
 });
+
 
 
 
