@@ -41,6 +41,45 @@ function showToast(message, type = 'error') {
     }, 3000);
 }
 
+function renderLandingProfiles() {
+    const container = document.getElementById('landing-profiles-list');
+    if(!container) return;
+    
+    // Берем первые 4 анкеты из базы (или случайные)
+    const previewProfiles = dbProfiles.slice(0, 4); 
+    
+    container.innerHTML = '';
+    previewProfiles.forEach(p => {
+        container.innerHTML += `
+            <div class="lobby-card">
+                <div class="player-info">
+                    <img src="${p.img}" class="avatar">
+                    <div>
+                        <div style="font-weight: bold;">${p.name}</div>
+                        <span class="game-tag">${p.game}</span>
+                    </div>
+                </div>
+                <button class="cta-btn outline" style="padding: 5px 15px; font-size: 0.9rem;" onclick="redirectToReg()">Connect</button>
+            </div>
+        `;
+    });
+}
+
+function selectOption(type, value, el) {
+    // Обновляем визуально
+    const container = el.parentElement;
+    container.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('selected'));
+    el.classList.add('selected');
+    
+    // Сохраняем в скрытый input
+    document.getElementById(`input-${type}`).value = value;
+}
+
+function updateCharCount(textarea) {
+    const count = textarea.value.length;
+    document.getElementById('char-count').innerText = `${count} / 150`;
+}
+
 // --- AUTH ---
 function toggleAuth() {
     isLoggedIn = !isLoggedIn;
@@ -397,7 +436,9 @@ window.toggleTag = toggleTag;
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
+    renderLandingProfiles(); // <-- Вызываем рендер анкет для главной
 });
+
 
 
 
