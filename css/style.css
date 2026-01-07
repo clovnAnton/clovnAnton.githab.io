@@ -122,6 +122,7 @@ header{
   align-items: center;
   gap: 14px;
   justify-self: start;
+  grid-column: 1;
 }
 
 /* online */
@@ -138,6 +139,7 @@ header{
 /* center nav */
 #header-nav{
   justify-self: center;
+  grid-column: 2;
 }
 
 /* right auth */
@@ -146,6 +148,7 @@ header{
   align-items: center;
   gap: 15px;
   justify-self: end;
+  grid-column: 3;
 }
 
 /* PUBLIC (not logged in): center the online counter in the header */
@@ -438,6 +441,7 @@ header:not(.logged-in) .header-stats{
     border: 1px solid var(--gold); width: 400px; text-align: center; 
     box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 }
+
 
 
 
