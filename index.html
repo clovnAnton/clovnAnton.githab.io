@@ -213,8 +213,21 @@
 <!-- Подключаем логику (модуль) -->
 <script type="module" src="js/app.js"></script>
 
+    <div id="super-like-modal" class="modal hidden">
+    <div class="modal-content">
+        <h3>Super Like <i class="fa-solid fa-star" style="color:var(--gold)"></i></h3>
+        <p>Send a message to stand out!</p>
+        <textarea id="super-msg" class="form-textarea" placeholder="Hi! Wanna play?"></textarea>
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="cta-btn outline" onclick="closeModal()">Cancel</button>
+            <button class="cta-btn" onclick="sendSuperLike()">Send</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
+
 
 
 
