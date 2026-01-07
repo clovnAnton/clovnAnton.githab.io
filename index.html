@@ -16,6 +16,12 @@
 <header>
     <div class="logo" onclick="isLoggedIn=false; updateInterface()">Steam<span>Mate</span></div>
     
+    <!-- НОВЫЙ БЛОК: СЧЕТЧИК ОНЛАЙНА -->
+    <div class="header-stats" style="margin-right: auto; margin-left: 30px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #aaa;">
+        <div style="width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; box-shadow: 0 0 8px #2ecc71;"></div>
+        <span id="online-count" style="font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums;">1,245 Online</span>
+    </div>
+
     <nav id="header-nav" class="nav-links hidden">
         <span id="link-home" class="nav-link active" onclick="switchTab('home')">Home</span>
         <span id="link-search" class="nav-link" onclick="switchTab('search')">Search</span>
@@ -216,6 +222,7 @@
 <script type="module" src="js/app.js"></script>
 </body>
 </html>
+
 
 
 
