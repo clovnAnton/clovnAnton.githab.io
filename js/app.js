@@ -17,6 +17,7 @@ let isProfileCompleted = false;
 let currentIndex = 0;
 let filteredProfiles = [...dbProfiles];
 let myTags = [];
+let superLikeLogs = [];
 let myProfileData = { 
     name: "Player_One",
     gender: "Male",
@@ -47,7 +48,7 @@ function renderLandingProfiles() {
     if(!container) return;
     
     // Берем первые 4 анкеты из базы (или случайные)
-    const previewProfiles = dbProfiles.slice(0, 4); 
+    const previewProfiles = dbProfiles.slice(0, 3); 
     
     container.innerHTML = '';
     previewProfiles.forEach(p => {
@@ -443,6 +444,26 @@ function saveProfile() {
     }, 800);
 }
 
+//СУПЕРЛАЙКИ
+
+function openSuperLikeModal() {
+    document.getElementById('super-like-modal').classList.remove('hidden');
+}
+function closeModal() {
+    document.getElementById('super-like-modal').classList.add('hidden');
+}
+function sendSuperLike() {
+    const msg = document.getElementById('super-msg').value;
+    const target = profileQueue[0]; // Текущая анкета
+    
+    superLikeLogs.push({ to: target.name, msg: msg, date: new Date().toLocaleTimeString() });
+    console.log("Super Likes Log:", superLikeLogs); // Смотреть в консоли (F12)
+    
+    closeModal();
+    handleSwipe('right'); // Авто-свайп вправо
+    showToast("Super Like sent!", "success");
+}
+
 // --- EXPOSE TO WINDOW ---
 window.showToast = showToast;
 window.toggleAuth = toggleAuth;
@@ -455,12 +476,16 @@ window.triggerPhotoUpload = triggerPhotoUpload;
 window.previewPhoto = previewPhoto;
 window.saveProfile = saveProfile;
 window.toggleTag = toggleTag;
+window.openSuperLikeModal = openSuperLikeModal;
+window.closeModal = closeModal;
+window.sendSuperLike = sendSuperLike;
 
 // --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
     console.log("App initialized");
     renderLandingProfiles(); // <-- Вызываем рендер анкет для главной
 });
+
 
 
 
