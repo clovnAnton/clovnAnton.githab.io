@@ -219,7 +219,7 @@ header {
     filter: drop-shadow(0 0 15px rgba(253,203,110,0.4)); 
     transition: 0.5s;
 }
-.tournament-card:hover .skin-img { transform: rotate(-5deg) scale(1.05); }
+.tournament-card:hover .skin-img { transform: rotate(-5deg) scale(1.05);  overflow: hidden; }
 @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
 
 /* --- APP GRID SYSTEM --- */
@@ -401,6 +401,7 @@ header {
     border: 1px solid var(--gold); width: 400px; text-align: center; 
     box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 }
+
 
 
 
