@@ -440,8 +440,64 @@ function sendSuperLike() {
     showToast("Super Like sent!", "success");
 }
 
-// --- INIT (FIXED) ---
-// Делаем функции глобальными, чтобы HTML мог их видеть
+// Мобильная кнопка фильтров (только для view-search)
+function initMobileFilters() {
+  if (window.innerWidth <= 768) {
+    // Создаем кнопку если её нет
+    if (!document.querySelector('.mobile-filter-btn')) {
+      const filterBtn = document.createElement('button');
+      filterBtn.className = 'mobile-filter-btn hidden';
+      filterBtn.innerHTML = '⚙️';
+      document.body.appendChild(filterBtn);
+
+      filterBtn.addEventListener('click', () => {
+        const rightSidebar = document.getElementById('right-sidebar');
+        if (rightSidebar) {
+          rightSidebar.classList.toggle('mobile-visible');
+        }
+      });
+
+      // Закрытие по клику на псевдоэлемент
+      document.addEventListener('click', (e) => {
+        const rightSidebar = document.getElementById('right-sidebar');
+        if (rightSidebar && rightSidebar.classList.contains('mobile-visible')) {
+          const rect = rightSidebar.getBoundingClientRect();
+          if (e.clientX > rect.right - 60 && e.clientY < 60) {
+            rightSidebar.classList.remove('mobile-visible');
+          }
+        }
+      });
+    }
+
+    // Показываем кнопку только на странице Search
+    const updateFilterButtonVisibility = () => {
+      const filterBtn = document.querySelector('.mobile-filter-btn');
+      const currentView = document.querySelector('.view-section:not(.hidden)');
+      if (filterBtn && currentView) {
+        if (currentView.id === 'view-search') {
+          filterBtn.classList.remove('hidden');
+        } else {
+          filterBtn.classList.add('hidden');
+        }
+      }
+    };
+
+    // Вызываем при переключении вкладок
+    document.querySelectorAll('.menu-item, .nav-link').forEach(item => {
+      item.addEventListener('click', () => {
+        setTimeout(updateFilterButtonVisibility, 100);
+      });
+    });
+
+    updateFilterButtonVisibility();
+  }
+}
+
+// Вызываем при загрузке и ресайзе
+initMobileFilters();
+window.addEventListener('resize', initMobileFilters);
+
+
 window.showToast = showToast;
 window.toggleAuth = toggleAuth;
 window.updateInterface = updateInterface;
@@ -463,6 +519,7 @@ window.sendSuperLike = sendSuperLike;
 console.log("App initialized successfully");
 renderLandingProfiles();
 startLiveStats();
+
 
 
 
