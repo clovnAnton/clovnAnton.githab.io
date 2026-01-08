@@ -269,7 +269,6 @@ function applyFiltersFromDOM() {
   renderCards();
 }
 
-
 function setFilter(type, value, el) {
   if (type === 'game') {
     document.querySelectorAll('#filter-game .filter-opt').forEach(e => e.classList.remove('selected'));
@@ -279,25 +278,9 @@ function setFilter(type, value, el) {
   el.classList.add('selected');
 
   const isMobile = window.innerWidth <= 768;
-  if (isMobile) return; // на мобилке не применяем сразу, ждём Apply
+  if (isMobile) return; 
 
-  applyFiltersFromDOM(); // на ПК всё как было
-} else if(type === 'gender') {
-        document.querySelectorAll('#filter-gender .filter-opt').forEach(e => e.classList.remove('selected'));
-    }
-    el.classList.add('selected');
-
-    const activeGame = document.querySelector('#filter-game .selected')?.dataset.val || 'all';
-    const activeGender = document.querySelector('#filter-gender .selected')?.dataset.val || 'all';
-
-    filteredProfiles = dbProfiles.filter(p => {
-        const gameMatch = activeGame === 'all' || p.game === activeGame;
-        const genderMatch = activeGender === 'all' || p.gender === activeGender;
-        return gameMatch && genderMatch;
-    });
-
-    profileQueue = [...filteredProfiles].sort(() => Math.random() - 0.5);
-    renderCards();
+  applyFiltersFromDOM(); 
 }
 
 function renderCards() {
@@ -468,55 +451,75 @@ function sendSuperLike() {
 
 // Мобильная кнопка фильтров (только для view-search)
 function initMobileFilters() {
-  if (window.innerWidth <= 768) {
-    // Создаем кнопку если её нет
-    if (!document.querySelector('.mobile-filter-btn')) {
-      const filterBtn = document.createElement('button');
-      filterBtn.className = 'mobile-filter-btn hidden';
-      filterBtn.innerHTML = '⚙️';
-      document.body.appendChild(filterBtn);
+  const isMobile = window.innerWidth <= 768;
+  const rightSidebar = document.getElementById('sidebar-right');
+  const viewSearch = document.getElementById('view-search');
 
-      filterBtn.addEventListener('click', () => {
-        const rightSidebar = document.getElementById('right-sidebar');
-        if (rightSidebar) {
-          rightSidebar.classList.toggle('mobile-visible');
-        }
-      });
-
-      // Закрытие по клику на псевдоэлемент
-      document.addEventListener('click', (e) => {
-        const rightSidebar = document.getElementById('right-sidebar');
-        if (rightSidebar && rightSidebar.classList.contains('mobile-visible')) {
-          const rect = rightSidebar.getBoundingClientRect();
-          if (e.clientX > rect.right - 60 && e.clientY < 60) {
-            rightSidebar.classList.remove('mobile-visible');
-          }
-        }
-      });
-    }
-
-    // Показываем кнопку только на странице Search
-    const updateFilterButtonVisibility = () => {
-      const filterBtn = document.querySelector('.mobile-filter-btn');
-      const currentView = document.querySelector('.view-section:not(.hidden)');
-      if (filterBtn && currentView) {
-        if (currentView.id === 'view-search') {
-          filterBtn.classList.remove('hidden');
-        } else {
-          filterBtn.classList.add('hidden');
-        }
-      }
-    };
-
-    // Вызываем при переключении вкладок
-    document.querySelectorAll('.menu-item, .nav-link').forEach(item => {
-      item.addEventListener('click', () => {
-        setTimeout(updateFilterButtonVisibility, 100);
-      });
-    });
-
-    updateFilterButtonVisibility();
+  // Создаём кнопку (если ещё нет)
+  let filterBtn = document.querySelector('.mobile-filter-btn');
+  if (!filterBtn) {
+    filterBtn = document.createElement('button');
+    filterBtn.className = 'mobile-filter-btn hidden';
+    filterBtn.innerHTML = '<i class="fa-solid fa-sliders"></i>';
+    document.body.appendChild(filterBtn);
   }
+
+  const openFilters = () => {
+    if (!rightSidebar) return;
+    rightSidebar.classList.add('mobile-visible');
+    if (viewSearch) viewSearch.classList.add('mobile-filters-open'); 
+  };
+
+  const closeFilters = () => {
+    rightSidebar?.classList.remove('mobile-visible');
+    viewSearch?.classList.remove('mobile-filters-open');
+  };
+
+  // Кнопка: открыть/закрыть
+  filterBtn.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (rightSidebar?.classList.contains('mobile-visible')) closeFilters();
+    else openFilters();
+  };
+
+  // Кнопка Apply внутри фильтров (добавляем один раз)
+  if (rightSidebar && !rightSidebar.querySelector('#filters-apply-btn')) {
+    const panel = rightSidebar.querySelector('.panel') || rightSidebar;
+    const applyBtn = document.createElement('button');
+    applyBtn.id = 'filters-apply-btn';
+    applyBtn.className = 'cta-btn';
+    applyBtn.style.width = '100%';
+    applyBtn.style.marginTop = '15px';
+    applyBtn.textContent = 'Apply filters';
+    applyBtn.addEventListener('click', () => {
+      applyFiltersFromDOM();
+      closeFilters();
+    });
+    panel.appendChild(applyBtn);
+  }
+
+  // Видимость кнопки: только на вкладке Search
+  const updateFilterButtonVisibility = () => {
+    if (!isMobile) {
+      filterBtn.classList.add('hidden');
+      closeFilters();
+      return;
+    }
+    const currentView = document.querySelector('.app-view:not(.hidden)');
+    if (currentView && currentView.id === 'view-search') {
+      filterBtn.classList.remove('hidden');
+    } else {
+      filterBtn.classList.add('hidden');
+      closeFilters();
+    }
+  };
+
+  document.querySelectorAll('.menu-item, .nav-link').forEach(item => {
+    item.addEventListener('click', () => setTimeout(updateFilterButtonVisibility, 50));
+  });
+
+  updateFilterButtonVisibility();
 }
 
 // Вызываем при загрузке и ресайзе
@@ -545,6 +548,8 @@ window.sendSuperLike = sendSuperLike;
 console.log("App initialized successfully");
 renderLandingProfiles();
 startLiveStats();
+
+
 
 
 
