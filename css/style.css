@@ -512,6 +512,11 @@ border: 1px solid var(--gold); width: 400px; text-align: center;
 box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 }
 
+/* MOBILE FILTER BUTTON */
+.mobile-filter-btn {
+display: none;
+}
+
 /* ============================================
    MOBILE RESPONSIVE STYLES
    ============================================ */
@@ -622,8 +627,16 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
   }
 
   /* --- LANDING PAGE --- */
+  #public-landing {
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
+  }
+
   .hero {
     padding: 40px 15px 30px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .hero h1 {
@@ -650,6 +663,14 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     padding: 0 15px 30px;
     gap: 20px;
     max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .landing-container > * {
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .lobby-card {
@@ -658,6 +679,8 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     padding: 15px;
     gap: 10px;
     margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .player-info {
@@ -666,10 +689,12 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 
   .tournament-card {
     max-width: 100%;
+    width: 100%;
     height: auto;
     min-height: 380px;
     padding: 20px 15px;
     margin: 0 auto;
+    box-sizing: border-box;
   }
 
   .skin-img {
@@ -677,7 +702,7 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     margin: 8px auto;
   }
 
-  /* Отключаем сложные hover-эффекты на мобилке для производительности */
+  /* Отключаем сложные hover-эффекты на мобилке */
   .tournament-card:hover .skin-img {
     transform: rotate(-10deg);
     filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
@@ -686,6 +711,8 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
   /* --- APP DASHBOARD --- */
   #app-dashboard {
     overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   .app-grid {
@@ -695,24 +722,75 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     height: auto;
     min-height: 100%;
     overflow: visible;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .sidebar {
     display: none;
   }
 
-  /* Показываем только активный сайдбар при необходимости */
+  /* Мобильная кнопка фильтров */
+  .mobile-filter-btn {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
+    z-index: 98;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+  }
+
+  .mobile-filter-btn:active {
+    transform: scale(0.95);
+  }
+
+  /* Мобильный сайдбар с фильтрами */
   .sidebar.mobile-visible {
     display: flex;
     position: fixed;
-    top: 60px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
     background: var(--bg-dark);
     z-index: 99;
-    padding: 20px;
+    padding: 80px 20px 20px;
     overflow-y: auto;
+    animation: slideInLeft 0.3s ease-out;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  /* Кнопка закрытия фильтров */
+  .sidebar.mobile-visible::before {
+    content: '×';
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+    z-index: 100;
+    line-height: 1;
   }
 
   .main-content-area {
@@ -720,6 +798,8 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     padding-right: 5px;
     height: auto;
     overflow: visible;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   /* --- VIEW: HOME DASHBOARD --- */
@@ -758,35 +838,54 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
   #view-search {
     min-height: calc(100vh - 120px);
     height: auto;
-    padding: 15px 10px;
+    padding: 15px 10px 80px;
     align-items: flex-start;
-    padding-top: 30px;
+    padding-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .card-stack {
     max-width: 100%;
-    width: calc(100vw - 30px);
+    width: calc(100vw - 20px);
     height: auto;
-    min-height: 500px;
-    max-height: 600px;
+    min-height: 520px;
+    max-height: none;
     margin: 0 auto;
     position: relative;
   }
 
+  /* КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: прячем неактивные карточки на мобилке */
   .profile-card {
     border-radius: 20px;
-    position: relative;
+    position: absolute;
+    width: 100%;
     height: auto;
-    min-height: 500px;
+    min-height: 520px;
+  }
+
+  /* Показываем только активную карточку */
+  .profile-card.active {
+    display: block;
+    position: relative;
+    z-index: 10;
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  /* Полностью прячем следующую карточку */
+  .profile-card.next {
+    display: none;
   }
 
   .card-photo {
-    height: 60%;
-    min-height: 300px;
+    height: 65%;
+    min-height: 320px;
+    max-height: 400px;
   }
 
   .card-content {
-    padding: 15px 20px 80px;
+    padding: 15px 20px 90px;
     margin-top: -30px;
   }
 
@@ -794,7 +893,7 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     font-size: 1.5rem;
   }
 
-  /* КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: кнопки теперь внизу карточки */
+  /* Кнопки внизу карточки */
   .actions-floating {
     position: absolute;
     bottom: 15px;
@@ -806,6 +905,7 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     gap: 15px;
     width: 100%;
     padding: 0 20px;
+    box-sizing: border-box;
   }
 
   .act-btn {
@@ -873,7 +973,7 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     padding: 25px 20px;
   }
 
-  /* --- AMBIENT EFFECTS (уменьшаем на мобилке) --- */
+  /* --- AMBIENT EFFECTS --- */
   body::before,
   body::after {
     width: 80%;
@@ -887,23 +987,24 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     height: 250px;
   }
 
-  /* --- ДОПОЛНИТЕЛЬНЫЕ ФИКСЫ OVERFLOW --- */
-  #public-landing {
+  /* --- ПРЕДОТВРАЩЕНИЕ OVERFLOW --- */
+  html {
     overflow-x: hidden;
-    overflow-y: auto;
+    width: 100%;
   }
-
+  
   body {
     overflow-x: hidden;
+    width: 100%;
+    position: relative;
   }
 
-  /* Убираем возможность горизонтального скролла */
   * {
-    max-width: 100vw;
+    max-width: 100%;
   }
 }
 
-/* Дополнительная адаптация для очень маленьких экранов */
+/* Дополнительная адаптация для маленьких экранов */
 @media (max-width: 480px) {
   .hero {
     padding: 30px 10px 25px;
@@ -928,20 +1029,24 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
 
   .card-stack {
     width: calc(100vw - 20px);
-    min-height: 480px;
-    max-height: 550px;
+    min-height: 500px;
   }
 
   .profile-card {
-    min-height: 480px;
+    min-height: 500px;
+  }
+
+  .profile-card.active {
+    min-height: 500px;
   }
 
   .card-photo {
-    min-height: 280px;
+    min-height: 300px;
+    max-height: 350px;
   }
 
   .card-content {
-    padding: 15px 15px 75px;
+    padding: 15px 15px 85px;
   }
 
   .actions-floating {
@@ -979,19 +1084,16 @@ box-shadow: 0 0 50px rgba(253, 203, 110, 0.2);
     font-size: 0.8rem;
     padding: 6px 4px;
   }
+
+  .mobile-filter-btn {
+    width: 52px;
+    height: 52px;
+    bottom: 15px;
+    right: 15px;
+    font-size: 1.3rem;
+  }
 }
 
-/* Фикс для предотвращения горизонтального скролла */
-@media (max-width: 768px) {
-  html {
-    overflow-x: hidden;
-  }
-  
-  body {
-    overflow-x: hidden;
-    position: relative;
-  }
-}
 
 
 
