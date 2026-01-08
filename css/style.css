@@ -518,449 +518,121 @@ display: none;
 }
 
 /* ============================================
-   MOBILE RESPONSIVE STYLES
+   MOBILE RESPONSIVE STYLES (FIXED)
    ============================================ */
-
 @media (max-width: 768px) {
-  
-  /* --- TOAST --- */
-  #toast-container {
-    top: 10px;
-    right: 10px;
-    left: 10px;
-  }
-  
-  .toast {
-    min-width: unset;
-    width: 100%;
-    padding: 12px 15px;
-    font-size: 0.9rem;
-  }
 
-  /* --- HEADER --- */
-  header {
-    height: auto;
-    min-height: 60px;
-    padding: 10px 15px;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: 10px;
-  }
+    /* --- GLOBAL FIXES --- */
+    #toast-container { top: 10px; right: 10px; left: 10px; }
+    .toast { min-width: unset; width: 100%; padding: 12px 15px; font-size: 0.9rem; }
 
-  /* Незарегистрированная версия */
-  header:not(.logged-in) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+    /* --- HEADER --- */
+    header { height: auto; min-height: 60px; padding: 10px 15px; grid-template-columns: 1fr; gap: 10px; }
+    header:not(.logged-in) { display: flex; flex-direction: column; align-items: center; }
+    header:not(.logged-in) .logo-container { order: 1; justify-self: center; }
+    header:not(.logged-in) .header-stats { order: 2; margin: 5px 0; position: static; transform: none; }
+    header:not(.logged-in) .auth-container { order: 3; justify-self: center; }
+    
+    header.logged-in { display: flex; flex-wrap: wrap; justify-content: space-between; }
+    header.logged-in #header-nav { order: 3; flex: 1 1 100%; margin-top: 10px; }
+    
+    .logo { font-size: 18px; }
+    .nav-links { gap: 15px; flex-wrap: wrap; justify-content: center; }
 
-  header:not(.logged-in) .logo-container {
-    order: 1;
-    justify-self: center;
-  }
+    /* --- APP LAYOUT --- */
+    #app-dashboard { overflow: hidden; width: 100%; height: calc(100vh - 120px); }
+    .app-grid { display: flex; flex-direction: column; padding: 0; gap: 0; height: 100%; width: 100%; }
+    .sidebar { display: none; }
+    .main-content-area { padding: 0; height: 100%; width: 100%; position: relative; }
 
-  header:not(.logged-in) .header-stats {
-    order: 2;
-    position: static;
-    transform: none;
-    margin: 5px 0;
-  }
-
-  header:not(.logged-in) .auth-container {
-    order: 3;
-    justify-self: center;
-  }
-
-  /* Зарегистрированная версия */
-  header.logged-in {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  header.logged-in .logo-container {
-    flex: 0 0 auto;
-  }
-
-  header.logged-in .header-stats {
-    flex: 0 0 auto;
-    font-size: 12px;
-    gap: 6px;
-  }
-
-  header.logged-in #header-nav {
-    order: 3;
-    flex: 1 1 100%;
-    margin-top: 10px;
-  }
-
-  header.logged-in .auth-container {
-    flex: 0 0 auto;
-  }
-
-  .logo {
-    font-size: 18px;
-  }
-
-  .logo-container {
-    gap: 10px;
-  }
-
-  .nav-links {
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .nav-link {
-    font-size: 0.9rem;
-  }
-
-  .steam-login-btn {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-  }
-
-  .auth-container {
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  /* --- LANDING PAGE --- */
-  #public-landing {
-    overflow-x: hidden;
-    overflow-y: auto;
-    width: 100%;
-  }
-
-  .hero {
-    padding: 40px 15px 30px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .hero h1 {
-    font-size: 2rem;
-    margin-bottom: 15px;
-  }
-
-  .hero p {
-    font-size: 1rem;
-    margin-bottom: 25px;
-    padding: 0 10px;
-  }
-
-  .cta-btn {
-    padding: 12px 24px;
-    font-size: 0.95rem;
-    display: inline-block;
-    width: auto;
-    max-width: 90%;
-  }
-
-  .landing-container {
-    grid-template-columns: 1fr;
-    padding: 0 15px 30px;
-    gap: 20px;
-    max-width: 100%;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .landing-container > * {
-    max-width: 100%;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .lobby-card {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px;
-    gap: 10px;
-    margin-bottom: 12px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .player-info {
-    width: 100%;
-  }
-
-  .tournament-card {
-    max-width: 100%;
-    width: 100%;
-    height: auto;
-    min-height: 380px;
-    padding: 20px 15px;
-    margin: 0 auto;
-    box-sizing: border-box;
-  }
-
-  .skin-img {
-    height: 160px;
-    margin: 8px auto;
-  }
-
-  /* Отключаем сложные hover-эффекты на мобилке */
-  .tournament-card:hover .skin-img {
-    transform: rotate(-10deg);
-    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
-  }
-
-  /* --- APP DASHBOARD --- */
-  #app-dashboard {
-    overflow-y: auto;
-    overflow-x: hidden;
-    width: 100%;
-  }
-
-  .app-grid {
-    grid-template-columns: 1fr;
-    padding: 15px;
-    gap: 15px;
-    height: auto;
-    min-height: 100%;
-    overflow: visible;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .sidebar {
-    display: none;
-  }
-
-  /* Мобильная кнопка фильтров */
-  .mobile-filter-btn {
-    display: block;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.4);
-    z-index: 98;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-  }
-
-  .mobile-filter-btn:active {
-    transform: scale(0.95);
-  }
-
-  /* Мобильный сайдбар с фильтрами */
-  .sidebar.mobile-visible {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--bg-dark);
-    z-index: 99;
-    padding: 80px 20px 20px;
-    overflow-y: auto;
-    animation: slideInLeft 0.3s ease-out;
-  }
-
-  @keyframes slideInLeft {
-    from {
-      transform: translateX(-100%);
+    /* --- VIEW: SEARCH (SWIPE CARDS) --- */
+    #view-search {
+        height: 100%;
+        padding: 10px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
     }
-    to {
-      transform: translateX(0);
+
+    .card-stack {
+        width: 100%;
+        height: 100%;
+        max-height: 75vh; /* Ограничение высоты под экран */
+        margin: 0 auto;
+        position: relative;
     }
-  }
 
-  /* Кнопка закрытия фильтров */
-  .sidebar.mobile-visible::before {
-    content: '×';
-    position: fixed;
-    top: 15px;
-    right: 20px;
-    font-size: 3rem;
-    color: white;
-    cursor: pointer;
-    z-index: 100;
-    line-height: 1;
-  }
+    .profile-card {
+        width: 100%;
+        height: 100%;
+        min-height: unset;
+        border-radius: 15px;
+        position: absolute;
+        top: 0; left: 0;
+        overflow: hidden;
+    }
 
-  .main-content-area {
-    padding-bottom: 30px;
-    padding-right: 5px;
-    height: auto;
-    overflow: visible;
-    width: 100%;
-    box-sizing: border-box;
-  }
+    .card-photo {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+    }
 
-  /* --- VIEW: HOME DASHBOARD --- */
-  .dash-hero {
-    flex-direction: column;
-    padding: 20px 15px;
-    text-align: center;
-    gap: 15px;
-  }
+    .card-content {
+        position: absolute;
+        bottom: 0; left: 0; width: 100%;
+        padding: 20px 20px 90px; /* Отступ снизу для кнопок */
+        background: linear-gradient(to top, rgba(15,17,21, 0.95) 0%, transparent 100%);
+        z-index: 2;
+    }
 
-  .dash-stats-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-bottom: 15px;
-  }
+    .actions-floating {
+        position: absolute;
+        bottom: 20px;
+        left: 0; width: 100%;
+        display: flex; justify-content: center; gap: 20px;
+        z-index: 20; /* Поверх карточки */
+        pointer-events: auto;
+    }
 
-  .stat-card {
-    padding: 15px;
-  }
+    .act-btn {
+        width: 60px; height: 60px;
+        background: rgba(24, 27, 33, 0.9);
+        backdrop-filter: blur(5px);
+    }
 
-  .stat-num {
-    font-size: 1.5rem;
-  }
+    /* --- MOBILE FILTER BUTTON & SIDEBAR --- */
+    .mobile-filter-btn {
+        display: flex !important;
+        position: fixed; bottom: 20px; right: 20px;
+        z-index: 200; /* Поверх всего */
+        width: 50px; height: 50px;
+        align-items: center; justify-content: center;
+        background: var(--primary); color: white; border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
 
-  .dash-state-container {
-    padding: 25px 15px;
-  }
-
-  .preview-card-wrapper {
-    max-width: 100%;
-    height: auto;
-    min-height: 450px;
-  }
-
-  /* --- VIEW: SEARCH (SWIPE CARDS) --- */
-  #view-search {
-    min-height: calc(100vh - 120px);
-    height: auto;
-    padding: 15px 10px 80px;
-    align-items: flex-start;
-    padding-top: 20px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .card-stack {
-    max-width: 100%;
-    width: calc(100vw - 20px);
-    height: auto;
-    min-height: 520px;
-    max-height: none;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  /* КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: прячем неактивные карточки на мобилке */
-  .profile-card {
-    border-radius: 20px;
-    position: absolute;
-    width: 100%;
-    height: auto;
-    min-height: 520px;
-  }
-
-  /* Показываем только активную карточку */
-  .profile-card.active {
-    display: block;
-    position: relative;
-    z-index: 10;
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  /* Полностью прячем следующую карточку */
-  .profile-card.next {
-    display: none;
-  }
-
-  .card-photo {
-    height: 65%;
-    min-height: 320px;
-    max-height: 400px;
-  }
-
-  .card-content {
-    padding: 15px 20px 90px;
-    margin-top: -30px;
-  }
-
-  .user-name-large {
-    font-size: 1.5rem;
-  }
-
-  /* Кнопки внизу карточки */
-  .actions-floating {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    right: auto;
-    flex-direction: row;
-    justify-content: center;
-    gap: 15px;
-    width: 100%;
-    padding: 0 20px;
-    box-sizing: border-box;
-  }
-
-  .act-btn {
-    width: 55px;
-    height: 55px;
-    font-size: 1.3rem;
-    flex-shrink: 0;
-  }
-
-  /* --- VIEW: TOURNAMENTS --- */
-  #view-tournaments {
-    padding: 15px;
-  }
-
-  .tourney-list {
-    gap: 15px;
-  }
-
-  .tourney-item {
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
-    padding: 20px 15px;
-  }
-
-  /* --- VIEW: PROFILE EDITOR --- */
-  #view-profile {
-    padding: 15px;
-    max-width: 100%;
-  }
-
-  .form-group {
-    margin-bottom: 15px;
-  }
-
-  .tags-container {
-    gap: 8px;
-  }
-
-  .tag-option {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-  }
-
-  .custom-select-container {
-    gap: 8px;
-    padding: 8px;
-  }
-
-  .select-option {
-    min-width: 60px;
-    padding: 8px 6px;
-    font-size: 0.85rem;
-    flex: 1 1 calc(33.333% - 8px);
-  }
+    .sidebar.mobile-visible {
+        display: flex;
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(15, 17, 21, 0.98);
+        z-index: 300;
+        padding: 60px 20px 20px;
+        overflow-y: auto;
+    }
+    .sidebar.mobile-visible::before {
+        content: '×'; position: absolute; top: 15px; right: 20px;
+        font-size: 3rem; color: white; line-height: 1; pointer-events: none;
+    }
+    
+    /* --- OTHER VIEWS --- */
+    #view-profile, #view-tournaments, #view-home { 
+        padding: 15px; overflow-y: auto; height: 100%; padding-bottom: 80px; 
+    }
+    .landing-container { grid-template-columns: 1fr; padding: 0 15px 30px; }
+}
 
   /* --- MODAL --- */
   .modal {
@@ -1093,6 +765,7 @@ display: none;
     font-size: 1.3rem;
   }
 }
+
 
 
 
