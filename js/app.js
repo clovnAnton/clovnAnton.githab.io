@@ -253,10 +253,36 @@ function renderTournaments() {
 }
 
 // --- CARDS & SEARCH ---
+
+// Helper: применение фильтров из DOM
+function applyFiltersFromDOM() {
+  const activeGame = document.querySelector('#filter-game .selected')?.dataset.val || 'all';
+  const activeGender = document.querySelector('#filter-gender .selected')?.dataset.val || 'all';
+
+  filteredProfiles = dbProfiles.filter(p => {
+    const gameMatch = activeGame === 'all' || p.game === activeGame;
+    const genderMatch = activeGender === 'all' || p.gender === activeGender;
+    return gameMatch && genderMatch;
+  });
+
+  profileQueue = [...filteredProfiles].sort(() => Math.random() - 0.5);
+  renderCards();
+}
+
+
 function setFilter(type, value, el) {
-    if(type === 'game') {
-        document.querySelectorAll('#filter-game .filter-opt').forEach(e => e.classList.remove('selected'));
-    } else if(type === 'gender') {
+  if (type === 'game') {
+    document.querySelectorAll('#filter-game .filter-opt').forEach(e => e.classList.remove('selected'));
+  } else if (type === 'gender') {
+    document.querySelectorAll('#filter-gender .filter-opt').forEach(e => e.classList.remove('selected'));
+  }
+  el.classList.add('selected');
+
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) return; // на мобилке не применяем сразу, ждём Apply
+
+  applyFiltersFromDOM(); // на ПК всё как было
+} else if(type === 'gender') {
         document.querySelectorAll('#filter-gender .filter-opt').forEach(e => e.classList.remove('selected'));
     }
     el.classList.add('selected');
