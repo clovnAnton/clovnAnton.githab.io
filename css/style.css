@@ -1125,6 +1125,11 @@ display: none;
     flex-direction: column !important;
   }
 
+   /* СКРЫВАЕМ следующую анкету на мобилке (исправление проблемы) */
+  .profile-card.next {
+    display: none !important;
+  }
+
   /* Фото ограничиваем по высоте */
   .card-photo {
     height: 42vh !important;
@@ -1198,6 +1203,7 @@ display: none;
     box-shadow: 0 -4px 12px rgba(0,0,0,0.3) !important;
   }
 }
+
 
 
 
