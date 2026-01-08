@@ -428,52 +428,39 @@ header:not(.logged-in) .header-stats{
 
 /* --- MOBILE RESPONSIVENESS --- */
 
+/* Планшеты (до 1024px) */
 @media (max-width: 1024px) {
-    /* Планшеты: Скрываем боковые панели, оставляем только контент */
     .app-grid {
-        grid-template-columns: 1fr; /* Одна колонка вместо трех */
+        grid-template-columns: 1fr;
         padding: 15px;
     }
-
-    /* Боковые панели скрываем по умолчанию на мобилках */
     #sidebar-left, #sidebar-right {
-        display: none; 
+        display: none;
     }
-    
-    /* Если нужно показать фильтры или меню, можно сделать их всплывающими,
-       но для первой версии проще оставить только центральную часть */
 }
 
+/* Телефоны (до 768px) */
 @media (max-width: 768px) {
-    /* --- HEADER --- */
-     /* HEADER FIXES */
-    header:not(.logged-in) .header-stats {
-        position: static; /* Отменяем абсолютное центрирование */
-        transform: none;
-        margin-left: 10px; /* Отступ от логотипа */
-        font-size: 0.75rem;
-    }
-    
-    .logo-container {
-        /* Разрешаем элементам логотипа сжиматься */
-        flex-shrink: 1; 
-        max-width: 50%;
-    }
-    
-    .logo {
-        font-size: 18px; /* Чуть уменьшаем лого */
-    }
-    
+    /* 1. HEADER */
     header {
-        padding: 0 15px; /* Меньше отступы */
-        grid-template-columns: auto 1fr auto; /* Лого | Пусто | Кнопка */
+        padding: 0 15px;
+        grid-template-columns: auto 1fr auto;
+    }
+    .logo-container {
+        flex-shrink: 1;
+        max-width: 60%;
+    }
+    .logo { font-size: 18px; }
+    .logo span { display: none; }
+    
+    header:not(.logged-in) .header-stats {
+        position: static;
+        transform: none;
+        margin-left: 10px;
+        font-size: 12px;
     }
 
-    .logo span {
-        display: none; /* Скрываем слово "Mate", оставляем только "Steam" или иконку, если места мало */
-    }
-
-    /* Навигацию (Home, Search...) на мобилках лучше перенести вниз */
+    /* 2. NAVIGATION */
     #header-nav {
         position: fixed;
         bottom: 0;
@@ -482,65 +469,94 @@ header:not(.logged-in) .header-stats{
         height: 60px;
         background: rgba(24, 27, 33, 0.95);
         backdrop-filter: blur(10px);
-        display: flex; /* Возвращаем flex, если он был скрыт */
+        display: flex !important;
         justify-content: space-around;
         align-items: center;
         border-top: 1px solid var(--border);
         z-index: 1000;
-        padding-bottom: env(safe-area-inset-bottom); /* Для iPhone без кнопки */
+        padding-bottom: env(safe-area-inset-bottom);
     }
-    
-    /* Стили ссылок в нижнем меню */
     .nav-link {
-        font-size: 0.8rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        font-size: 12px;
+        border: none;
         padding: 5px;
-        border: none; /* Убираем нижнее подчеркивание десктопа */
     }
 
-    /* --- LANDING --- */
-    .hero h1 {
-        font-size: 2.2rem; /* Уменьшаем заголовок */
-    }
+    /* 3. LANDING & CARDS */
+    .hero h1 { font-size: 2rem; }
     
     .landing-container {
-        grid-template-columns: 1fr; /* Карточки одна под другой */
-        padding: 0 15px 80px; /* Отступ снизу для нижнего меню */
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0 15px 100px;
+        box-sizing: border-box;
+    }
+     .lobby-card {
+        width: 100%;
+        box-sizing: border-box;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        
+        /* Добавляем явные границы для мобилки */
+        background: rgba(30, 33, 40, 0.95); /* Чуть темнее фон */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Более заметная рамка */
+        border-radius: 12px; /* Скругление */
+        padding: 20px; /* Внутренние отступы */
+        margin-bottom: 15px; /* Отступ между карточками */
+    }
+    .lobby-card .cta-btn {
+        width: 100%;
+        margin-top: 5px;
     }
 
-    /* --- CARDS --- */
+    /* 4. TOURNAMENTS */
+     .tournament-card {
+        width: 100% !important;
+        max-width: 100%; /* Не даем вылезать за экран */
+        
+        /* ЖЕСТКАЯ ВЫСОТА, как просили */
+        height: 400px; 
+        min-height: 400px; 
+        
+        /* Центрирование контента */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .skin-img {
+        /* Картинка подстраивается под жесткую высоту */
+        width: 100%; 
+        height: 160px; /* Фиксированная высота для картинки на телефоне */
+        object-fit: contain; /* Картинка ужмется, но не обрежется */
+        margin: 10px auto;
+        
+        /* Сброс лишних отступов, если были */
+        transform: rotate(-5deg); /* Чуть меньший наклон для компактности */
+    }
+    
+    .tourney-list { grid-template-columns: 1fr; }
+    .tourney-item { flex-direction: column; text-align: center; gap: 15px; }
+    .btn-full { width: 100%; margin-left: 0; }
+    
+    /* 5. APP VIEW FIXES */
     .card-stack {
         max-width: 100%;
-        height: 70vh; /* Карточки занимают 70% высоты экрана */
+        height: 65vh;
     }
-
-    .profile-card {
-        border-radius: 16px;
-    }
-
     .actions-floating {
-        right: 20px; /* Кнопки лайка ближе к краю */
-        bottom: 80px; /* Выше над нижним меню */
-    }
-
-    /* --- TOURNAMENTS --- */
-    .tourney-list {
-        grid-template-columns: 1fr; /* Турниры в одну колонку */
-    }
-    
-    .tourney-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-    }
-    
-    .btn-full {
-        width: 100%; /* Кнопка на всю ширину */
-        margin-left: 0;
+        right: 20px;
+        bottom: 80px;
     }
 }
+
+
+
+
 
 
 
